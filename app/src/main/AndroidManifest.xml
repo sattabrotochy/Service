@@ -22,6 +22,8 @@
         </activity>
 
         <service android:name=".MusicService"/>
+
+        <receiver android:name=".MyReceiver"/>
     </application>
 
 </manifest>
