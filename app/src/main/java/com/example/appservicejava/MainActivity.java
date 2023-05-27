@@ -3,6 +3,7 @@ package com.example.appservicejava;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -33,7 +34,9 @@ public class MainActivity extends AppCompatActivity {
     Drawable drawable;
     BitmapDrawable bitmapDrawable;
     Bitmap bitmap;
+    PendingIntent pendingIntent;
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +55,24 @@ public class MainActivity extends AppCompatActivity {
         manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
+       Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+       intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent= PendingIntent.getActivity(this, 101, intent, PendingIntent.FLAG_MUTABLE);
+        }
+        Notification.BigPictureStyle bigPictureStyle=new Notification.BigPictureStyle()
+                .bigPicture(bitmap);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notification = new Notification.Builder(this)
                     .setLargeIcon(bitmap)
                     .setSmallIcon(R.drawable.image)
                     .setContentText("new Message")
                     .setContentTitle("new notification")
+                    .setContentIntent(pendingIntent)
                     .setChannelId(CHANEL_ID)
+                    .setStyle(bigPictureStyle)
                     .build();
             notificationManager.createNotificationChannel(new NotificationChannel(CHANEL_ID,"MY CHANEL",NotificationManager.IMPORTANCE_HIGH));
 
@@ -68,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
                     .setSmallIcon(R.drawable.image)
                     .setContentText("new Message")
                     .setContentTitle("new notification")
+                    .setContentIntent(pendingIntent)
+                    .setStyle(bigPictureStyle)
                     .build();
         }
 
