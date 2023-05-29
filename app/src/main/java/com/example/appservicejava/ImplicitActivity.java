@@ -33,6 +33,13 @@ public class ImplicitActivity extends AppCompatActivity {
         });
 
 
+
+
+
+
+
+
+
         btnMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
